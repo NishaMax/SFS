@@ -1,0 +1,285 @@
+@import "tailwindcss";
+
+/* ─── Google Fonts (imported via layout.tsx for performance) ─── */
+
+/* ─── Tailwind v4 Theme ─── */
+@theme inline {
+  /* Brand Colors - matched to the Sinduja Fancy Store banner */
+  --color-green-950: #0a2e12;
+  --color-green-900: #14532d;
+  --color-green-800: #166534;
+  --color-green-700: #15803d;
+  --color-green-600: #16a34a;
+  --color-green-500: #22c55e;
+  --color-green-400: #4ade80;
+  --color-green-300: #86efac;
+  --color-green-200: #bbf7d0;
+  --color-green-100: #dcfce7;
+  --color-green-50: #f0fdf4;
+
+  --color-gold-500: #c9a84c;
+  --color-gold-400: #d4b965;
+  --color-gold-300: #e0ca7e;
+
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+  --color-muted: #6b7280;
+
+  /* Fonts */
+  --font-heading: var(--font-outfit);
+  --font-body: var(--font-outfit);
+  --font-sinhala: var(--font-noto-sinhala);
+}
+
+/* ─── Base Reset & Smooth Scrolling ─── */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Selection Style ─── */
+::selection {
+  background-color: #16a34a;
+  color: white;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f0fdf4;
+}
+::-webkit-scrollbar-thumb {
+  background: #16a34a;
+  border-radius: 9999px;
+}
+
+/* ─── Glassmorphism Utility ─── */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.glass-dark {
+  background: rgba(20, 83, 45, 0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+/* ─── Entrance Animations ─── */
+@keyframes drawS {
+  0% { stroke-dashoffset: 600; opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes doorOpenLeft {
+  from { transform: perspective(1200px) rotateY(0deg); }
+  to { transform: perspective(1200px) rotateY(-105deg); }
+}
+
+@keyframes doorOpenRight {
+  from { transform: perspective(1200px) rotateY(0deg); }
+  to { transform: perspective(1200px) rotateY(105deg); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-8px) rotate(2deg); }
+  66% { transform: translateY(4px) rotate(-1deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Utility Classes ─── */
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+/* ─── Card Hover/Touch Effects ─── */
+.card-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-lift:hover,
+.card-lift:active {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(20, 83, 45, 0.12);
+}
+
+/* ─── Section Transitions (Intersection Observer) ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Premium Button ─── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: linear-gradient(135deg, #15803d, #166534);
+  color: white;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(21, 128, 61, 0.3);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: transparent;
+  color: #15803d;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 2px solid #15803d;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+.btn-outline:hover {
+  background: #15803d;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(21, 128, 61, 0.2);
+}
+
+/* ─── Gradient Text ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #15803d, #166534, #c9a84c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Section Divider ─── */
+.section-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #15803d, #16a34a);
+  border-radius: 9999px;
+  margin: 0 auto;
+}
+
+/* ─── Horizontal Scroll (Products Carousel) ─── */
+.scroll-container {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 1rem;
+}
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+.scroll-container > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
