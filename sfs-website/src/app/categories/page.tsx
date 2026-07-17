@@ -57,7 +57,7 @@ export default function CategoriesPage() {
                 {/* Photo Placeholder */}
                 <div className="w-full aspect-[4/3] rounded-xl overflow-hidden relative bg-green-50 mb-4 shadow-inner">
                   <Image
-                    src="/images/placeholder.svg"
+                    src={cat.icon || "/images/placeholder.svg"}
                     alt={cat.name[language]}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"

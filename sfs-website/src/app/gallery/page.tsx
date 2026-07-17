@@ -6,31 +6,22 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { useStore } from '@/providers/StoreProvider';
 
 type Category = 'all' | 'store' | 'customers' | 'products';
 
-interface GalleryImage {
-  id: number;
-  src: string;
+export interface GalleryImage {
+  id: string;
+  image_url: string;
   category: Category;
-  alt: string;
-  height: number; // for masonry varied heights
+  caption_en: string;
+  caption_si: string;
+  caption_ta: string;
 }
-
-const images: GalleryImage[] = [
-  { id: 1, src: '/images/placeholder.svg', category: 'store', alt: 'Store Front', height: 300 },
-  { id: 2, src: '/images/placeholder.svg', category: 'customers', alt: 'Happy Customer', height: 400 },
-  { id: 3, src: '/images/placeholder.svg', category: 'products', alt: 'Teddy Bears Shelf', height: 250 },
-  { id: 4, src: '/images/placeholder.svg', category: 'products', alt: 'School Items', height: 350 },
-  { id: 5, src: '/images/placeholder.svg', category: 'customers', alt: 'Customer Buying Gift', height: 300 },
-  { id: 6, src: '/images/placeholder.svg', category: 'store', alt: 'Inside Store', height: 450 },
-  { id: 7, src: '/images/placeholder.svg', category: 'products', alt: 'Tech Accessories', height: 300 },
-  { id: 8, src: '/images/placeholder.svg', category: 'store', alt: 'Evening Store View', height: 250 },
-  { id: 9, src: '/images/placeholder.svg', category: 'customers', alt: 'Kids with toys', height: 400 },
-];
 
 export default function GalleryPage() {
   const { language, setLanguage, isLoading, t } = useLanguage();
+  const { gallery } = useStore();
   const [filter, setFilter] = useState<Category>('all');
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
@@ -53,7 +44,7 @@ export default function GalleryPage() {
     { id: 'products', label: gal.filterProducts },
   ];
 
-  const filteredImages = filter === 'all' ? images : images.filter(img => img.category === filter);
+  const filteredImages = filter === 'all' ? gallery : gallery.filter(img => img.category === filter);
 
   return (
     <main className="min-h-screen flex flex-col bg-gray-50/50">
@@ -108,12 +99,12 @@ export default function GalleryPage() {
                 transition={{ duration: 0.3 }}
                 key={img.id}
                 className="break-inside-avoid relative rounded-2xl overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl border border-gray-100"
-                style={{ height: img.height }}
+                style={{ height: `${200 + (parseInt(img.id.replace(/\D/g, '') || '0') % 3) * 100}px` }}
                 onClick={() => setSelectedImage(img)}
               >
                 <Image
-                  src={img.src}
-                  alt={img.alt}
+                  src={img.image_url}
+                  alt={img[`caption_${language}`] || ''}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -121,7 +112,7 @@ export default function GalleryPage() {
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
                   <span className="text-white font-medium drop-shadow-md translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    {img.alt}
+                    {img[`caption_${language}`]}
                   </span>
                 </div>
               </motion.div>
@@ -150,10 +141,10 @@ export default function GalleryPage() {
               className="relative w-full max-w-5xl aspect-[4/3] md:aspect-video rounded-3xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()} // prevent closing when clicking image
             >
-              <Image src={selectedImage.src} alt={selectedImage.alt} fill className="object-contain bg-black/50" />
+              <Image src={selectedImage.image_url} alt={selectedImage[`caption_${language}`] || ''} fill className="object-contain bg-black/50" />
             </motion.div>
             <div className="absolute bottom-6 left-0 right-0 text-center text-white text-lg font-medium">
-              {selectedImage.alt}
+              {selectedImage[`caption_${language}`]}
             </div>
           </motion.div>
         )}
