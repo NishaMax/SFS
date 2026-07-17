@@ -9,110 +9,89 @@ interface DoorEntranceProps {
 export default function DoorEntrance({ onComplete }: DoorEntranceProps) {
   return (
     <motion.div
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-gradient-to-b from-green-50 to-white overflow-hidden"
+      className="fixed inset-0 z-[90] flex items-center justify-center bg-gradient-to-b from-green-900 to-green-950 overflow-hidden"
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
     >
       {/* Store Front Frame */}
-      <div className="relative w-full max-w-lg mx-auto px-4">
-        {/* Arch Top */}
+      <div className="relative w-full max-w-lg mx-auto px-4 flex flex-col items-center">
+        {/* Arch Top / Welcome Text */}
         <motion.div
-          className="mx-auto mb-0 text-center"
+          className="mb-8 text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
-          <p className="text-green-700 text-sm tracking-[0.2em] uppercase font-medium">
+          <p className="text-green-300/80 text-xs md:text-sm tracking-[0.3em] uppercase font-semibold mb-2">
             Welcome to
           </p>
-          <h2 className="text-2xl md:text-3xl font-bold text-green-800 mt-1">
+          <h2 className="text-3xl md:text-4xl font-bold text-white tracking-wide">
             Sinduja Fancy Store
           </h2>
-          <div className="section-divider mt-3 mb-6" />
         </motion.div>
 
-        {/* Door Frame */}
-        <div className="relative mx-auto" style={{ width: '280px', height: '380px' }}>
-          {/* Frame Border */}
-          <div className="absolute inset-0 border-4 border-green-800 rounded-t-[140px] overflow-hidden">
-            {/* Behind the doors - store glimpse */}
-            <div className="absolute inset-0 bg-gradient-to-b from-green-100 via-green-50 to-white flex flex-col items-center justify-center">
-              <span className="text-5xl mb-3">🏪</span>
-              <p className="text-green-700 text-sm font-medium">Come Inside</p>
+        {/* Modern Glass Door Frame */}
+        <div className="relative w-full max-w-sm h-[400px] md:h-[450px]">
+          {/* Frame Border with subtle glow */}
+          <div className="absolute inset-0 border-[3px] border-green-700/50 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(21,128,61,0.3)] bg-[#0a1f11]">
+            
+            {/* Behind the doors - store glow/glimpse */}
+            <div className="absolute inset-0 bg-gradient-to-b from-green-800/40 to-[#0a1f11] flex flex-col items-center justify-center opacity-80">
+              <div className="w-20 h-20 rounded-full bg-green-500/20 blur-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+              <p className="text-green-300 font-medium tracking-widest uppercase text-sm z-10">Step Inside</p>
             </div>
 
-            {/* Left Door */}
+            {/* Left Sliding Door (Glassmorphism) */}
             <motion.div
-              className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-br from-green-700 to-green-900 border-r border-green-600 origin-left"
-              style={{ transformOrigin: 'left center' }}
-              initial={{ rotateY: 0 }}
-              animate={{ rotateY: -105 }}
-              transition={{ duration: 1.2, delay: 0.8, ease: [0.4, 0, 0.2, 1] }}
+              className="absolute left-0 top-0 w-1/2 h-full bg-white/5 backdrop-blur-md border-r border-white/10 flex justify-end items-center pr-3 sm:pr-4"
+              initial={{ x: 0 }}
+              animate={{ x: '-100%' }}
+              transition={{ duration: 1.6, delay: 1.0, ease: [0.75, 0, 0.25, 1] }}
             >
-              {/* Door Panel Detail */}
-              <div className="h-full flex flex-col items-center justify-center">
-                <div className="w-16 h-24 border-2 border-green-500/30 rounded-lg mb-4" />
-                <div className="w-16 h-24 border-2 border-green-500/30 rounded-lg" />
-              </div>
-              {/* Door Handle */}
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-10 bg-gold-400 rounded-full" />
+              {/* Sleek Vertical Handle */}
+              <div className="w-1 md:w-1.5 h-32 md:h-40 bg-gradient-to-b from-green-300/40 via-green-100 to-green-300/40 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
             </motion.div>
 
-            {/* Right Door */}
+            {/* Right Sliding Door (Glassmorphism) */}
             <motion.div
-              className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-bl from-green-700 to-green-900 border-l border-green-600 origin-right"
-              style={{ transformOrigin: 'right center' }}
-              initial={{ rotateY: 0 }}
-              animate={{ rotateY: 105 }}
-              transition={{ duration: 1.2, delay: 0.8, ease: [0.4, 0, 0.2, 1] }}
+              className="absolute right-0 top-0 w-1/2 h-full bg-white/5 backdrop-blur-md border-l border-white/10 flex justify-start items-center pl-3 sm:pl-4"
+              initial={{ x: 0 }}
+              animate={{ x: '100%' }}
+              transition={{ duration: 1.6, delay: 1.0, ease: [0.75, 0, 0.25, 1] }}
             >
-              {/* Door Panel Detail */}
-              <div className="h-full flex flex-col items-center justify-center">
-                <div className="w-16 h-24 border-2 border-green-500/30 rounded-lg mb-4" />
-                <div className="w-16 h-24 border-2 border-green-500/30 rounded-lg" />
+              {/* Sleek Vertical Handle */}
+              <div className="w-1 md:w-1.5 h-32 md:h-40 bg-gradient-to-b from-green-300/40 via-green-100 to-green-300/40 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
+            </motion.div>
+
+            {/* Logo overlay strictly hiding before open */}
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 0, scale: 1.1 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
+              <div className="w-16 h-16 rounded-full border border-green-400/50 bg-green-900/40 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                <span className="text-green-300 text-2xl font-bold font-serif">S</span>
               </div>
-              {/* Door Handle */}
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 w-2 h-10 bg-gold-400 rounded-full" />
             </motion.div>
           </div>
-
-          {/* Logo overlay on doors */}
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            <div className="w-16 h-16 rounded-full border-3 border-white/40 flex items-center justify-center">
-              <span className="text-white text-2xl font-bold">S</span>
-            </div>
-          </motion.div>
         </div>
 
         {/* Enter Button */}
         <motion.div
-          className="text-center mt-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.2, duration: 0.5 }}
+          className="mt-10"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5, duration: 0.8 }}
         >
           <motion.button
             onClick={onComplete}
-            className="btn-primary text-base px-8 py-3"
+            className="group relative px-8 py-3 bg-transparent border border-green-500 text-green-300 font-medium tracking-wider rounded-full overflow-hidden"
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            animate={{
-              boxShadow: [
-                '0 0 0 0 rgba(21, 128, 61, 0.4)',
-                '0 0 0 12px rgba(21, 128, 61, 0)',
-              ],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: 'easeOut',
-            }}
           >
-            🚪 Enter the Store
+            <span className="relative z-10">ENTER STORE</span>
+            <div className="absolute inset-0 bg-green-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           </motion.button>
         </motion.div>
       </div>

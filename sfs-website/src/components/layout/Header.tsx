@@ -27,6 +27,16 @@ export default function Header({ t, language, onLanguageChange }: HeaderProps) {
     { label: t.nav.contact, href: '#contact' },
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    const targetId = href.replace('#', '');
+    const elem = document.getElementById(targetId);
+    if (elem) {
+      elem.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-green-100/50" id="header">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -47,6 +57,7 @@ export default function Header({ t, language, onLanguageChange }: HeaderProps) {
             <a
               key={link.href}
               href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
               className="text-sm font-medium text-green-700 hover:text-green-900 transition-colors relative
                 after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-green-600 after:rounded-full
                 hover:after:w-full after:transition-all after:duration-300"
@@ -130,7 +141,7 @@ export default function Header({ t, language, onLanguageChange }: HeaderProps) {
                 <motion.a
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.05 }}
