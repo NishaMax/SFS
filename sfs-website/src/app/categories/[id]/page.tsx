@@ -2,20 +2,21 @@
 
 import { useState, useMemo } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { categories } from '@/data/categories';
-import { categoryItems, CategoryItem, getBrands, findSKU, ProductSKU } from '@/data/categoryItems';
+import { CategoryItem, getBrands, findSKU, ProductSKU } from '@/data/categoryItems';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useParams } from 'next/navigation';
+import { useStore } from '@/providers/StoreProvider';
 
 // Get the cheapest SKU for a product (used on compact card)
 function getCheapestSKU(item: CategoryItem): ProductSKU {
+  if (item.skus.length === 0) return {} as ProductSKU;
   return item.skus.reduce((min, s) => {
-    const a = parseInt(min.price.replace(/[^\d]/g, ''));
-    const b = parseInt(s.price.replace(/[^\d]/g, ''));
+    const a = parseInt(min.price?.replace(/[^\d]/g, '') || '0');
+    const b = parseInt(s.price?.replace(/[^\d]/g, '') || '0');
     return b < a ? s : min;
   }, item.skus[0]);
 }
@@ -34,13 +35,14 @@ export default function CategoryItemsPage() {
   const { language, setLanguage, isLoading, t } = useLanguage();
   const params = useParams();
   const categoryId = params.id as string;
+  const { categories, categoryItems, loading: storeLoading } = useStore();
 
   const [search, setSearch] = useState('');
   const [selectedItem, setSelectedItem] = useState<CategoryItem | null>(null);
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
 
-  if (isLoading || !language) {
+  if (isLoading || !language || storeLoading) {
     return (
       <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-700 to-green-900 flex items-center justify-center shadow-md animate-pulse">
@@ -55,7 +57,7 @@ export default function CategoryItemsPage() {
   const filteredItems = allItems.filter(item => {
     const q = search.toLowerCase();
     if (!q) return true;
-    const matchName = item.name[language].toLowerCase().includes(q) || item.name.en.toLowerCase().includes(q);
+    const matchName = item.name[language]?.toLowerCase().includes(q) || item.name.en?.toLowerCase().includes(q);
     const matchBrand = item.skus.some(s => s.brand.toLowerCase().includes(q));
     return matchName || matchBrand;
   });

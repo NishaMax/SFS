@@ -46,3 +46,6 @@ next-env.d.ts
 
 # local design files or scratchpads
 scratch/
+
+# user-uploaded images (served from /public/uploads/)
+public/uploads/

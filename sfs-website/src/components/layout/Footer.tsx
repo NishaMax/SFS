@@ -1,12 +1,13 @@
 'use client';
 
-import { Translations } from '@/types';
+import { Translations, Language } from '@/types';
 
 interface FooterProps {
   t: Translations;
+  language?: Language;
 }
 
-export default function Footer({ t }: FooterProps) {
+export default function Footer({ t, language }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (

@@ -5,7 +5,7 @@ import { useInView } from '@/hooks/useInView';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Translations, Language } from '@/types';
-import { categories } from '@/data/categories';
+import { useStore } from '@/providers/StoreProvider';
 
 interface CategoriesProps {
   t: Translations;
@@ -13,6 +13,8 @@ interface CategoriesProps {
 }
 
 export default function Categories({ t, language }: CategoriesProps) {
+  const { categories, loading } = useStore();
+
   const { ref, isInView } = useInView(0.1);
 
   return (

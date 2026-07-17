@@ -60,6 +60,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://sindujafancy.lk"),
 };
 
+import { StoreProvider } from '@/providers/StoreProvider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -110,7 +112,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col antialiased">{children}</body>
+      <body className="min-h-full flex flex-col antialiased">
+        <StoreProvider>{children}</StoreProvider>
+      </body>
     </html>
   );
 }
+

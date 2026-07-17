@@ -2,17 +2,18 @@
 
 import { useLanguage } from '@/hooks/useLanguage';
 import { translations } from '@/data/translations';
-import { categories } from '@/data/categories';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { useStore } from '@/providers/StoreProvider';
 
 export default function CategoriesPage() {
   const { language, setLanguage, isLoading, t } = useLanguage();
+  const { categories, loading: storeLoading } = useStore();
 
-  if (isLoading || !language) {
+  if (isLoading || !language || storeLoading) {
     return (
       <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-700 to-green-900 flex items-center justify-center shadow-md animate-pulse">

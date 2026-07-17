@@ -1,4 +1,4 @@
-import { Translations } from '@/types';
+import { Language } from '@/types';
 
 /**
  * SKU = Stock Keeping Unit
@@ -19,8 +19,8 @@ export interface ProductSKU {
 export interface CategoryItem {
   id: string;
   categoryId: string;
-  name: Translations;
-  description: Translations;
+  name: Record<Language, string>;
+  description: Record<Language, string>;
   variantLabels: string[];           // e.g. ['Color', 'Type'] — defines the selectors
   skus: ProductSKU[];
   defaultImage?: string;             // fallback image

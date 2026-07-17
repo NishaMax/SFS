@@ -6,45 +6,13 @@ import Footer from '@/components/layout/Footer';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Language } from '@/types';
-
-// Mock promotions data
-const activePromotions = [
-  {
-    id: '1',
-    title: { en: 'Back to School Sale', si: 'පාසල් වාරය සඳහා විශේෂ දීමනා', ta: 'பள்ளிக்குத் திரும்பும் விற்பனை' },
-    desc: { en: 'Get up to 20% off on all school stationery and bags.', si: 'සියලුම පාසල් උපකරණ සහ බෑග් සඳහා 20% දක්වා වට්ටම්.', ta: 'பள்ளி பொருட்கள் மற்றும் பைகளுக்கு 20% தள்ளுபடி.' },
-    discount: '20% OFF',
-    validUntil: '2026-08-31',
-    code: 'SCHOOL20',
-    color: 'from-blue-600 to-indigo-700',
-    categoryLink: '/categories/school-items'
-  },
-  {
-    id: '2',
-    title: { en: 'Tech Upgrade Week', si: 'තාක්ෂණික උපාංග සතිය', ta: 'தொழில்நுட்ப மேம்படுத்தல் வாரம்' },
-    desc: { en: 'Buy any 64GB Flash Drive and get a free OTG adapter.', si: 'ඕනෑම 64GB පෙන් ඩ්‍රයිව් එකක් සමඟ OTG ඇඩප්ටරයක් නොමිලේ.', ta: 'எந்த 64 ஜிபி ஃபிளாஷ் டிரைவ் வாங்கினாலும் இலவச OTG அடாப்டர்.' },
-    discount: 'FREE GIFT',
-    validUntil: '2026-07-31',
-    code: 'TECHGIFT',
-    color: 'from-purple-600 to-fuchsia-700',
-    categoryLink: '/categories/tech-accessories'
-  },
-  {
-    id: '3',
-    title: { en: 'Weekend Toys Bonanza', si: 'සති අන්ත සෙල්ලම් බඩු දීමනාව', ta: 'வார இறுதி பொம்மைகள் சலுகை' },
-    desc: { en: 'Flat 15% discount on all teddy bears and kids toys.', si: 'සියලුම ටෙඩි සහ සෙල්ලම් බඩු සඳහා 15% ක වට්ටමක්.', ta: 'அனைத்து டெடி பியர்கள் மற்றும் பொம்மைகளுக்கு 15% தள்ளுபடி.' },
-    discount: '15% OFF',
-    validUntil: '2026-07-25',
-    code: 'PLAY15',
-    color: 'from-orange-500 to-red-600',
-    categoryLink: '/categories/toys'
-  }
-];
+import { useStore } from '@/providers/StoreProvider';
 
 export default function PromotionsPage() {
   const { language, setLanguage, isLoading, t } = useLanguage();
+  const { promotions, loading: storeLoading } = useStore();
 
-  if (isLoading || !language) {
+  if (isLoading || !language || storeLoading) {
     return (
       <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-700 to-green-900 flex items-center justify-center shadow-md animate-pulse">
@@ -53,6 +21,23 @@ export default function PromotionsPage() {
       </div>
     );
   }
+
+  // Use promotions from Supabase
+  const activePromotions = promotions
+    .filter(p => p.active)
+    .map((p, i) => {
+      const colors = ['from-blue-600 to-indigo-700', 'from-purple-600 to-fuchsia-700', 'from-orange-500 to-red-600'];
+      return {
+        id: p.id,
+        title: { en: p.title, si: p.title, ta: p.title }, // Fallback to same title for all languages if not translated
+        desc: { en: p.description, si: p.description, ta: p.description },
+        discount: p.discount,
+        validUntil: p.validUntil,
+        code: p.code,
+        color: colors[i % colors.length],
+        categoryLink: '/categories' // Link to all categories for now
+      };
+    });
 
   const promoT = t.promotionsPage;
 
