@@ -85,4 +85,52 @@ export interface Translations {
     select: string;
     subtitle: string;
   };
+  aboutPage: {
+    title: string;
+    subtitle: string;
+    missionTitle: string;
+    missionDesc: string;
+    visionTitle: string;
+    visionDesc: string;
+    valuesTitle: string;
+    value1: string;
+    value2: string;
+    value3: string;
+    story: string;
+  };
+  galleryPage: {
+    title: string;
+    subtitle: string;
+    filterAll: string;
+    filterStore: string;
+    filterCustomers: string;
+    filterProducts: string;
+  };
+  promotionsPage: {
+    title: string;
+    subtitle: string;
+    activeOffers: string;
+    expiredOffers: string;
+    validUntil: string;
+    shopNow: string;
+  };
+  contactPage: {
+    title: string;
+    subtitle: string;
+    formName: string;
+    formEmail: string;
+    formMessage: string;
+    formSubmit: string;
+    infoAddress: string;
+    infoPhone: string;
+    infoEmail: string;
+    infoHours: string;
+    faqTitle: string;
+    faqQ1: string;
+    faqA1: string;
+    faqQ2: string;
+    faqA2: string;
+    faqQ3: string;
+    faqA3: string;
+  };
 }

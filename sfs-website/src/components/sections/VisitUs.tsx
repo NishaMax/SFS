@@ -29,7 +29,7 @@ export default function VisitUs({ t, language }: VisitUsProps) {
           {/* Map */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="rounded-2xl overflow-hidden shadow-lg border border-green-100 h-[300px] md:h-full min-h-[300px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.5!2d80.38!3d6.53!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMzEnNDguMCJOIDgwwrAyMic0OC4wIkU!5e0!3m2!1sen!2slk!4v1"
+              src="https://maps.google.com/maps?q=Kalawana%20Bus%20Stand&t=&z=16&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -90,11 +90,11 @@ export default function VisitUs({ t, language }: VisitUsProps) {
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-sm">
                       <span className="text-green-500">Mon - Sat</span>
-                      <span className="text-green-800 font-medium">8:00 AM - 8:00 PM</span>
+                      <span className="text-green-800 font-medium">8:00 AM - 6:00 PM</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-green-500">Sunday</span>
-                      <span className="text-green-800 font-medium">9:00 AM - 6:00 PM</span>
+                      <span className="text-green-800 font-medium">9:00 AM - 5:00 PM</span>
                     </div>
                   </div>
                 </div>
@@ -103,7 +103,7 @@ export default function VisitUs({ t, language }: VisitUsProps) {
 
             {/* Get Directions Button */}
             <a
-              href="https://maps.google.com/?q=6.53,80.38"
+              href="https://maps.google.com/?q=Kalawana+Bus+Stand"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary justify-center w-full text-center mt-1"

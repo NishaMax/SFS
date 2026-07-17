@@ -1,0 +1,7 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#F0FDF4"/>
+  <path d="M150 200L183.333 160L216.667 190L250 140L300 220H100L150 200Z" fill="#BBF7D0"/>
+  <circle cx="160" cy="140" r="20" fill="#BBF7D0"/>
+  <text x="200" y="260" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#166534" text-anchor="middle">Photo Placeholder</text>
+  <text x="200" y="285" font-family="system-ui, sans-serif" font-size="14" fill="#15803D" text-anchor="middle">Will be updated via Admin Panel</text>
+</svg>

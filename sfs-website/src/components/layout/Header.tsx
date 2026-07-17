@@ -21,19 +21,26 @@ export default function Header({ t, language, onLanguageChange }: HeaderProps) {
   const [langMenuOpen, setLangMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: t.nav.home, href: '#home' },
-    { label: t.nav.categories, href: '#categories' },
-    { label: t.nav.about, href: '#about' },
-    { label: t.nav.contact, href: '#contact' },
+    { label: t.nav.home, href: '/#home' },
+    { label: t.nav.newArrivals, href: '/new-arrivals' },
+    { label: t.nav.categories, href: '/categories' },
+    { label: t.nav.promotions, href: '/promotions' },
+    { label: t.nav.gallery, href: '/gallery' },
+    { label: t.nav.about, href: '/about' },
+    { label: t.nav.contact, href: '/contact' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
     setMenuOpen(false);
-    const targetId = href.replace('#', '');
-    const elem = document.getElementById(targetId);
-    if (elem) {
-      elem.scrollIntoView({ behavior: 'smooth' });
+    
+    // Only intercept if it's an anchor link
+    if (href.includes('#')) {
+      const targetId = href.split('#')[1];
+      const elem = document.getElementById(targetId);
+      if (elem) {
+        e.preventDefault();
+        elem.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -133,7 +140,7 @@ export default function Header({ t, language, onLanguageChange }: HeaderProps) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden overflow-hidden border-t border-green-100"
+            className="md:hidden overflow-hidden border-t border-green-100 bg-white/95 backdrop-blur-md shadow-2xl"
             aria-label="Mobile navigation"
           >
             <div className="px-4 py-3 flex flex-col gap-1">
