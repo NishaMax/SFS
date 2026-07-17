@@ -61,6 +61,7 @@ export const metadata: Metadata = {
 };
 
 import { StoreProvider } from '@/providers/StoreProvider';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 export default function RootLayout({
   children,
@@ -68,7 +69,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} ${notoSinhala.variable} ${notoTamil.variable} h-full`}>
+    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${notoSinhala.variable} ${notoTamil.variable} h-full`}>
       <head>
         {/* Schema.org LocalBusiness JSON-LD */}
         <script
@@ -113,7 +114,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col antialiased">
-        <StoreProvider>{children}</StoreProvider>
+        <ThemeProvider>
+          <StoreProvider>{children}</StoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

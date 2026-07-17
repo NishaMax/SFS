@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, Translations } from '@/types';
+import { useTheme } from '@/providers/ThemeProvider';
 
 interface HeaderProps {
   t: Translations;
@@ -19,6 +20,7 @@ const langLabels: Record<Language, string> = {
 export default function Header({ t, language, onLanguageChange }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
     { label: t.nav.home, href: '/#home' },
@@ -76,6 +78,25 @@ export default function Header({ t, language, onLanguageChange }: HeaderProps) {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="theme-toggle"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          >
+            <motion.span
+              key={theme}
+              initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.3 }}
+              className="icon"
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </motion.span>
+          </button>
+
           {/* Language Switcher */}
           <div className="relative">
             <button
