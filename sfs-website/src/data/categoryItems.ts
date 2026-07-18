@@ -52,6 +52,17 @@ export function findSKU(item: CategoryItem, brand: string, options: Record<strin
   );
 }
 
+export function getCheapestSKU(item: CategoryItem): ProductSKU {
+  if (!item.skus || item.skus.length === 0) {
+    return { id: '', brand: '', price: 'Rs. 0', options: {}, inStock: false };
+  }
+  return item.skus.reduce((min, sku) => {
+    const minPrice = parseInt(min.price.replace(/[^\d]/g, ''), 10) || 0;
+    const skuPrice = parseInt(sku.price.replace(/[^\d]/g, ''), 10) || 0;
+    return skuPrice < minPrice ? sku : min;
+  }, item.skus[0]);
+}
+
 // ─────────────────────────────────────────────
 //  MOCK DATA  (will come from DB in Phase 4)
 // ─────────────────────────────────────────────

@@ -4,29 +4,32 @@ import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Translations, Language } from '@/types';
+import { useStore } from '@/providers/StoreProvider';
+import { getCheapestSKU } from '@/data/categoryItems';
 
 interface FeaturedProductsProps {
   t: Translations;
   language: Language;
 }
 
-const mockProducts = [
-  { id: '1', name: { en: 'Premium School Bag', si: 'ප්‍රිමියම් පාසල් බෑගය', ta: 'பிரீமியம் பள்ளி பை' }, price: 'Rs. 2,500', color: '#dcfce7' },
-  { id: '2', name: { en: 'Cute Teddy Bear', si: 'ආකර්ෂණීය ටෙඩි', ta: 'அழகான டெடி பியர்' }, price: 'Rs. 1,800', color: '#fef3c7' },
-  { id: '3', name: { en: 'Water Bottle', si: 'වතුර බෝතලය', ta: 'தண்ணீர் பாட்டில்' }, price: 'Rs. 650', color: '#dbeafe' },
-  { id: '4', name: { en: 'Wireless Earphones', si: 'වයර්ලස් ඉයර්ෆෝන්', ta: 'வயர்லெஸ் இயர்போன்' }, price: 'Rs. 3,200', color: '#f3e8ff' },
-  { id: '5', name: { en: 'Gift Box Set', si: 'තෑගි පෙට්ටි කට්ටලය', ta: 'பரிசு பெட்டி செட்' }, price: 'Rs. 1,200', color: '#fce7f3' },
-  { id: '6', name: { en: 'Geometry Box', si: 'ජ්‍යාමිතික පෙට්ටිය', ta: 'ஜியோமெட்ரி பாக்ஸ்' }, price: 'Rs. 450', color: '#ccfbf1' },
-  { id: '7', name: { en: 'Premium Pen', si: 'ප්‍රිමියම් පෑන', ta: 'பிரீமியம் பேனா' }, price: 'Rs. 350', color: '#e0e7ff' },
-  { id: '8', name: { en: 'Phone Charger', si: 'දුරකථන චාජරය', ta: 'போன் சார்ஜர்' }, price: 'Rs. 900', color: '#fef9c3' },
-];
-
 export default function FeaturedProducts({ t, language }: FeaturedProductsProps) {
   const { ref, isInView } = useInView(0.1);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const { categoryItems } = useStore();
 
-  // CSS handles the scrolling logic via .animate-marquee
+  // Pick up to 8 products to feature (e.g. the first 8 items, or you could filter by isNew)
+  const displayItems = categoryItems.slice(0, 8);
+  
+  // If no items, don't show the section or show a fallback
+  if (displayItems.length === 0) return null;
+
+  // Duplicate items for the continuous marquee effect
+  // We need enough items to fill the screen width twice to loop seamlessly
+  let marqueeItems = [...displayItems];
+  if (marqueeItems.length < 12) {
+    marqueeItems = [...marqueeItems, ...marqueeItems, ...marqueeItems];
+  }
 
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-white to-green-50/40" ref={ref} aria-labelledby="featured-heading">
@@ -47,35 +50,41 @@ export default function FeaturedProducts({ t, language }: FeaturedProductsProps)
 
       {/* Scrolling Product Cards */}
       <div className="overflow-hidden w-full px-4 md:px-8 mt-6">
-        <div className="animate-marquee flex gap-4 md:gap-6 pb-6">
-          {[...mockProducts, ...mockProducts, ...mockProducts].map((product, i) => (
-            <motion.div
-              key={`${product.id}-${i}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: 0.2 + (i % 8) * 0.05 }}
-              className="w-[160px] sm:w-[200px] md:w-[220px] bg-white rounded-2xl shadow-sm border border-green-50 overflow-hidden group hover:shadow-lg transition-all flex-shrink-0"
-            >
-              {/* Photo Placeholder */}
-              <div className="h-36 sm:h-44 w-full relative overflow-hidden bg-green-50 shadow-inner">
-                <Image
-                  src="/images/placeholder.svg"
-                  alt={product.name[language]}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 768px) 200px, 250px"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-green-800 text-sm leading-snug mb-1.5 line-clamp-2">{product.name[language]}</h3>
-                <p className="text-green-600 text-xs font-bold">{product.price}</p>
-                <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-xs text-green-500 font-medium">{t.common.explore} →</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div className="animate-marquee flex gap-4 md:gap-6 pb-6 hover:[animation-play-state:paused]">
+          {marqueeItems.map((product, i) => {
+            const cheapest = getCheapestSKU(product);
+            const imageSrc = cheapest.image || product.defaultImage || '/images/placeholder.svg';
+            
+            return (
+              <Link href={`/categories/${product.categoryId}`} key={`${product.id}-${i}`}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ delay: 0.2 + (i % 8) * 0.05 }}
+                  className="w-[160px] sm:w-[200px] md:w-[220px] bg-white rounded-2xl shadow-sm border border-green-50 overflow-hidden group hover:shadow-lg transition-all flex-shrink-0 cursor-pointer h-full"
+                >
+                  {/* Photo Placeholder */}
+                  <div className="h-36 sm:h-44 w-full relative overflow-hidden bg-green-50 shadow-inner">
+                    <Image
+                      src={imageSrc}
+                      alt={product.name[language]}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 200px, 250px"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-green-800 text-sm leading-snug mb-1.5 line-clamp-2">{product.name[language]}</h3>
+                    <p className="text-green-600 text-xs font-bold">{cheapest.price}</p>
+                    <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs text-green-500 font-medium">{t.common.explore} →</span>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
