@@ -13,6 +13,7 @@ export interface ProductSKU {
   options: Record<string, string>;   // e.g. { Color: 'Blue', Type: 'Gel' }
   price: string;
   inStock: boolean;
+  stockCount?: number;               // specific stock quantity
   image?: string;                    // each SKU can have its own photo
 }
 

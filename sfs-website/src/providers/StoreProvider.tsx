@@ -57,14 +57,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const mappedItems: CategoryItem[] = prodsData.map(p => {
           const productSkus: ProductSKU[] = skusData
             .filter(s => s.product_id === p.id)
-            .map(s => ({
-              id: s.id,
-              brand: s.brand,
-              price: s.price,
-              inStock: s.in_stock,
-              image: s.image || undefined,
-              options: s.options || {},
-            }));
+            .map(s => {
+              const stock = s.stock_count !== undefined && s.stock_count !== null ? s.stock_count : (s.in_stock ? 10 : 0);
+              return {
+                id: s.id,
+                brand: s.brand,
+                price: s.price,
+                stockCount: stock,
+                inStock: stock > 0,
+                image: s.image || undefined,
+                options: s.options || {},
+              };
+            });
             
           return {
             id: p.id,
