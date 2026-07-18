@@ -123,6 +123,7 @@ export default function AdminProductsPage() {
   const [skuPrice, setSkuPrice] = useState('');
   const [skuOptions, setSkuOptions] = useState('');
   const [skuImage, setSkuImage] = useState('');
+  const [skuStock, setSkuStock] = useState('10');
 
   const handleAddSKU = async (itemId: string) => {
     if (!skuBrand.trim() || !skuPrice.trim()) return;
@@ -139,7 +140,8 @@ export default function AdminProductsPage() {
       brand: skuBrand,
       price: skuPrice,
       options: optionsObj,
-      in_stock: true,
+      stock_count: parseInt(skuStock) || 0,
+      in_stock: (parseInt(skuStock) || 0) > 0,
       image: skuImage || null
     });
 
@@ -148,7 +150,7 @@ export default function AdminProductsPage() {
     } else {
       await refreshData();
       setAddingSKUFor(null);
-      setSkuBrand(''); setSkuPrice(''); setSkuOptions(''); setSkuImage('');
+      setSkuBrand(''); setSkuPrice(''); setSkuOptions(''); setSkuImage(''); setSkuStock('10');
     }
     setLoading(false);
   };
@@ -281,7 +283,7 @@ export default function AdminProductsPage() {
 
                         <div className="flex items-center justify-between mb-4">
                           <h4 className="text-sm font-bold text-gray-300">SKUs ({item.skus.length})</h4>
-                          <button onClick={() => { setAddingSKUFor(addingSKUFor === item.id ? null : item.id); setSkuBrand(''); setSkuPrice(''); setSkuOptions(''); setSkuImage(''); }} className="text-xs bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1.5 rounded-lg hover:bg-green-500/20 transition-colors font-medium">+ Add SKU</button>
+                          <button onClick={() => { setAddingSKUFor(addingSKUFor === item.id ? null : item.id); setSkuBrand(''); setSkuPrice(''); setSkuOptions(''); setSkuImage(''); setSkuStock('10'); }} className="text-xs bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1.5 rounded-lg hover:bg-green-500/20 transition-colors font-medium">+ Add SKU</button>
                         </div>
 
                         {/* Add SKU Form */}
@@ -300,9 +302,15 @@ export default function AdminProductsPage() {
                                 <input value={skuPrice} onChange={e => setSkuPrice(e.target.value)} placeholder="e.g. Rs. 1,500" className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-green-500" />
                               </div>
                             </div>
-                            <div>
-                              <label className="text-[11px] text-gray-500 mb-1 block">Options <span className="text-gray-600">(Key:Value, comma-separated)</span></label>
-                              <input value={skuOptions} onChange={e => setSkuOptions(e.target.value)} placeholder="Color:Blue, Size:Large" className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-green-500" />
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <label className="text-[11px] text-gray-500 mb-1 block">Initial Stock Count</label>
+                                <input type="number" min="0" value={skuStock} onChange={e => setSkuStock(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-green-500" />
+                              </div>
+                              <div>
+                                <label className="text-[11px] text-gray-500 mb-1 block">Options <span className="text-gray-600">(Key:Value, comma-separated)</span></label>
+                                <input value={skuOptions} onChange={e => setSkuOptions(e.target.value)} placeholder="Color:Blue, Size:Large" className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-green-500" />
+                              </div>
                             </div>
                             <div className="flex gap-2">
                               <button onClick={() => setAddingSKUFor(null)} className="px-4 py-2 rounded-lg text-xs text-gray-400 border border-gray-700 hover:bg-gray-800">Cancel</button>
@@ -339,9 +347,12 @@ export default function AdminProductsPage() {
                                   </div>
                                 </div>
                                 <span className="text-green-400 text-sm font-bold whitespace-nowrap">{sku.price}</span>
-                                <button onClick={() => toggleStock(item.id, sku.id, sku.inStock)} className={`px-3 py-1 rounded-lg text-[10px] font-bold border transition-all whitespace-nowrap ${sku.inStock ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
-                                  {sku.inStock ? '✓ In Stock' : '✕ Out'}
-                                </button>
+                                <div className="text-right">
+                                  <div className="text-xs text-gray-400 mb-0.5">Stock: {sku.stockCount || 0}</div>
+                                  <div className={`px-2 py-0.5 rounded-md text-[9px] font-bold border transition-all inline-block whitespace-nowrap ${sku.inStock ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                                    {sku.inStock ? '✓ In Stock' : '✕ Out'}
+                                  </div>
+                                </div>
                                 <button onClick={() => deleteSKU(item.id, sku.id)} className="w-7 h-7 rounded-lg bg-gray-800 text-gray-500 hover:bg-red-500/10 hover:text-red-400 transition-colors flex items-center justify-center text-xs">🗑</button>
                               </div>
                             ))}
