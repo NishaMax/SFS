@@ -60,7 +60,7 @@ export default function AboutPage() {
             className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-white"
           >
             <Image 
-              src="/images/placeholder.svg" // Replace with actual store photo later
+              src="/images/our-story.png"
               alt="Store Front" 
               fill 
               className="object-cover"

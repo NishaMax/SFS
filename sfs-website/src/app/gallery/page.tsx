@@ -12,11 +12,9 @@ type Category = 'all' | 'store' | 'customers' | 'products';
 
 export interface GalleryImage {
   id: string;
-  image_url: string;
+  src: string;
   category: Category;
-  caption_en: string;
-  caption_si: string;
-  caption_ta: string;
+  alt: string;
 }
 
 export default function GalleryPage() {
@@ -103,8 +101,8 @@ export default function GalleryPage() {
                 onClick={() => setSelectedImage(img)}
               >
                 <Image
-                  src={img.image_url}
-                  alt={img[`caption_${language}`] || ''}
+                  src={img.src}
+                  alt={img.alt || ''}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -112,7 +110,7 @@ export default function GalleryPage() {
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
                   <span className="text-white font-medium drop-shadow-md translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    {img[`caption_${language}`]}
+                    {img.alt}
                   </span>
                 </div>
               </motion.div>
@@ -141,10 +139,10 @@ export default function GalleryPage() {
               className="relative w-full max-w-5xl aspect-[4/3] md:aspect-video rounded-3xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()} // prevent closing when clicking image
             >
-              <Image src={selectedImage.image_url} alt={selectedImage[`caption_${language}`] || ''} fill className="object-contain bg-black/50" />
+              <Image src={selectedImage.src} alt={selectedImage.alt || ''} fill className="object-contain bg-black/50" />
             </motion.div>
             <div className="absolute bottom-6 left-0 right-0 text-center text-white text-lg font-medium">
-              {selectedImage[`caption_${language}`]}
+              {selectedImage.alt}
             </div>
           </motion.div>
         )}
